@@ -27,7 +27,7 @@ main:
     ### Read first string
     mov $0, %rax    # sys_read
     mov $0, %rdi    #stdin
-    mov $string1, %rsi   # store in input1 buffer
+    mov $string1, %rsi   # store in string1 buffer
     mov $255, %rdx
     syscall
     sub $1, %rax
@@ -60,9 +60,9 @@ start_compare:
     cmp $0, %rcx        
     jle finish
 
-    mov $string1, %rsi   # source index, puts address of first string
-    mov $string2, %rdi   # dest index, puts address of second string
-    xor %r12, %r12      # stores the total number of bit differences
+    mov $string1, %rsi   # source index, puts value of first string
+    mov $string2, %rdi   # dest index, puts value of second string
+    xor %r12, %r12      # stores the hamming distance
 
 char_loop:
     movzb (%rsi), %rax
@@ -75,8 +75,9 @@ bit_loop:
     test $1, %rax
     jz next_bit
     inc %r12
+    
 next_bit:
-    shr $1, %rax
+    shr $1, %rax #shifts string in %rax one to the right
     dec %rdx
     jnz bit_loop
 
